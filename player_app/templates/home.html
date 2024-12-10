@@ -1,0 +1,176 @@
+{% extends "login.html" %}
+
+{% block content %}
+<style>
+     h1 {
+            margin: 20px 0;
+            color: #b9251d;
+        }
+
+        form {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            width: 80%;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 25px;
+            outline: none;
+            background-color: #181818;
+            color: #fff;
+            margin-left: 15%;
+            
+        }
+
+        input[type="text"]:focus {
+            border-color: #1DB954;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ea420f;
+            color: #fff;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        
+
+        #song-results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 80%;
+        }
+
+        .song-box {
+            background-color: #1E1E1E;
+            border-radius: 15px;
+            padding: 15px;
+            width: 150px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .song-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .song-box h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .song-box p {
+            margin: 0;
+            color: #B3B3B3;
+        }
+
+        audio {
+            margin-top: 20px;
+            width: 300px;
+            background-color: #181818;
+        }
+
+        #song-results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 0 auto; /* Centers the song results container */
+}
+
+.song-box {
+    display: flex;
+    align-items: center;
+    background-color: #6b4646;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px; /* Adjust padding as needed */
+    width: 1000px; /* Manually set the width */
+    max-width: 100%; /* Ensures responsiveness */
+    cursor: pointer;
+   
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.song-box:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.song-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: -220px;
+}
+
+.song-details {
+    flex-grow: 1;
+}
+
+.song-title marquee {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.song-artist {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.song-duration {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Welcome to Music Streaming</h1>
+
+
+    
+    <form method="GET" action="{% url 'home' %}">
+        <input type="text" style="align-items: center;" name="q" placeholder="Search for a song...">
+        <button type="submit">Search</button>
+    </form>
+    
+    <div id="song-results" class="song-list">
+        {% if songs %}
+            {% for song in songs %}
+            <div class="song-box" onclick="window.location.href='{% url 'play_song' query=song.url_160kbps %}'">
+                <img src="{{ song.image_url }}" alt="{{ song.name }} Album Art" class="song-image">
+                <div class="song-details">
+                    <div class="song-title" title="{{ song.artists }}">
+                        <span class="scroll-text">{{ song.name }} (From {{song.album}}) </span>
+                    </div>
+                    <p class="song-artist">{{ song.artists }}</p>
+                    <p class="song-duration">{{ song.duration }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="song-box">
+                <p>No songs found. Try searching for something!</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    
+
+</div>
+    {% endblock %}
